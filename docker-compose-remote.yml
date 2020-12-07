@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  mysqlsrv:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: "admin"
+      MYSQL_DATABASE: "medicine"
+    ports:
+      - "3306:3306"
+    volumes:
+      - "mysql-data:/var/lib/mysql"
+
+  backend:
+    image: mathiasbald/trab3ppbackend
+    volumes:
+      - "$HOME/.m2:/root/.m2"
+    ports:
+      - "8080:8080" 
+    environment:
+      - DATABASE_URL=mysqlsrv
+
+
+volumes:
+    mysql-data:
+        external: false
+    maven_cache:
+        external: false
