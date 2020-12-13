@@ -19,11 +19,41 @@ class PatientBloc extends Bloc<PatientEvent, PatientState> {
 
   String controllerTextAge;
 
+  FocusNode focusNode;
+
   int age;
   @override
   Stream<PatientState> mapEventToState(
     PatientEvent event,
   ) async* {
+    if (event is ControlCheckMalePressedEvent) {
+      if (!event.value && !checkF) {
+        checkM = event.value;
+        sex = "MASCULINO";
+        yield UpdateCheckControllMaleState(
+            sex: sex, checkM: checkM, checkF: checkF);
+      } else {
+        checkM = event.value;
+        checkF = !checkM;
+        sex = "MASCULINO";
+        yield UpdateCheckControllMaleState(
+            sex: sex, checkM: checkM, checkF: checkF);
+      }
+    }
+    if (event is ControlCheckFemalePressedEvent) {
+      if (!event.value && !checkM) {
+        checkF = event.value;
+        sex = "FEMININO";
+        yield UpdateCheckControllFemaleState(
+            sex: sex, checkM: checkF, checkF: checkF);
+      } else {
+        checkF = event.value;
+        checkM = !checkF;
+        sex = "FEMININO";
+        yield UpdateCheckControllFemaleState(
+            sex: sex, checkM: checkM, checkF: checkF);
+      }
+    }
     if (event is CreatePatientButtonPressedEvent) {
       yield LoadingActionCreatePatientState();
       Patient patient;
@@ -39,53 +69,20 @@ class PatientBloc extends Bloc<PatientEvent, PatientState> {
         yield FailedCreatePatientState();
       }
     }
-  }
-
-  @override
-  Stream<PatientState> mapEventToStateCheckButton(
-    PatientEvent event,
-  ) async* {
-    if (event is ControlCheckPressedEvent) {}
+    if (event is ControllAgeChangedEvent) {
+      try {
+        if (event.value.isNotEmpty) {
+          age = int.parse(event.value);
+          yield ValueIsNumberState(age: age);
+        }
+      } catch (_) {
+        print("deu exception");
+        yield ValueIsNotNumberState();
+      }
+    }
   }
 
   navigatorPopInitPage(BuildContext context) {
     Navigator.pop(context);
-  }
-
-  _controllerCheckM(bool value) {
-    if (!value && !checkF) {
-      checkM = value;
-      sex = "MASCULINO";
-    } else {
-      checkM = value;
-      checkF = !checkM;
-      sex = "MASCULINO";
-    }
-  }
-
-  _controllerCheckF(bool value) {
-    if (!value && !checkM) {
-      checkF = value;
-      sex = "FEMININO";
-    } else {
-      checkF = value;
-      checkM = !checkF;
-      sex = "FEMININO";
-    }
-  }
-
-  _acceptNumber(String value, FocusNode focusNode) {
-    try {
-      if (value.isNotEmpty) {
-        age = int.parse(value);
-      }
-      focusNode.addListener(() {
-        if (!focusNode.hasFocus) {
-          controllerTextAge = "$age";
-        }
-      });
-    } catch (_) {
-      controllerTextAge = "";
-    }
   }
 }

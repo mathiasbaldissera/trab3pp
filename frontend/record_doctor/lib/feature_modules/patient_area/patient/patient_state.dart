@@ -26,3 +26,42 @@ class FailedCreatePatientState extends PatientState {
   @override
   List<Object> get props => [];
 }
+
+class UpdateCheckControllMaleState extends PatientState {
+  final bool checkM;
+  final bool checkF;
+  final String sex;
+  UpdateCheckControllMaleState({this.checkF, this.checkM, this.sex});
+  @override
+  List<Object> get props => [checkM, checkF, sex];
+}
+
+class UpdateCheckControllFemaleState extends PatientState {
+  final bool checkM;
+  final bool checkF;
+  final String sex;
+  UpdateCheckControllFemaleState({this.checkF, this.checkM, this.sex});
+  @override
+  List<Object> get props => [checkM, checkF, sex];
+}
+
+class ValueIsNumberState extends PatientState {
+  final int age;
+  ValueIsNumberState({this.age});
+  @override
+  List<Object> get props => [age];
+}
+
+class ValueIsNotNumberState extends PatientState {
+  final String value = "";
+  @override
+  List<Object> get props => [];
+}
+
+class UpdateValueFieldAgeState extends PatientState {
+  final String value;
+
+  UpdateValueFieldAgeState({this.value});
+  @override
+  List<Object> get props => [value];
+}

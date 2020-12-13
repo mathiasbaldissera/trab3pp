@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:record_doctor/feature_modules/patient_area/patient/patient_bloc.dart';
+import 'package:record_doctor/feature_modules/patient_area/patient/patient_event.dart';
+import 'package:record_doctor/feature_modules/patient_area/patient/patient_state.dart';
 
 class PatientForm extends StatefulWidget {
   final TextEditingController nameController;
-  final TextEditingController ageController;
+  TextEditingController ageController;
   final TextEditingController sexController;
 
-  const PatientForm(
-      {this.nameController, this.ageController, this.sexController});
+  PatientForm({this.nameController, this.ageController, this.sexController});
   @override
   _PatientFormState createState() => _PatientFormState();
 }
@@ -17,94 +20,127 @@ class _PatientFormState extends State<PatientForm> {
   bool checkM = false;
 
   bool checkF = false;
+  int age = 0;
+  var _blocPatient;
 
   @override
   void initState() {
     super.initState();
     focusNode = new FocusNode();
+    _blocPatient = BlocProvider.of<PatientBloc>(context);
   }
 
-  int age = 0;
-  _controllerCheckM(bool value) {
-    setState(() {
-      if (!value && !checkF) {
-        checkM = value;
-        widget.sexController.text = "MASCULINO";
-      } else {
-        checkM = value;
-        checkF = !checkM;
-        widget.sexController.text = "MASCULINO";
-      }
-    });
-  }
-
-  _controllerCheckF(bool value) {
-    setState(() {
-      if (!value && !checkM) {
-        checkF = value;
-        widget.sexController.text = "FEMININO";
-      } else {
-        checkF = value;
-        checkM = !checkF;
-        widget.sexController.text = "FEMININO";
-      }
-    });
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: MediaQuery.of(context).size.height * 0.55,
-      child: Padding(
-        padding: const EdgeInsets.only(left: 50.0, right: 50),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            TextFormField(
-              decoration: InputDecoration(labelText: "Nome do Paciente"),
-              controller: widget.nameController,
-            ),
-            TextFormField(
-              decoration: InputDecoration(labelText: "Idade do Paciente"),
-              controller: widget.ageController,
-              focusNode: focusNode,
-              onChanged: (value) {
-                try {
-                  if (value.isNotEmpty) {
-                    age = int.parse(value);
-                  }
-                  focusNode.addListener(() {
-                    if (!focusNode.hasFocus) {
-                      widget.ageController.text = "$age";
-                    }
-                  });
-                } catch (_) {
-                  setState(() {
-                    widget.ageController.text = "";
-                  });
-                }
-              },
-            ),
-            Row(
-              children: [
-                Checkbox(
-                  value: checkM,
-                  onChanged: (value) {
-                    _controllerCheckM(value);
-                  },
-                ),
-                Text("Masculino"),
-                Checkbox(
-                  value: checkF,
-                  onChanged: (value) {
-                    _controllerCheckF(value);
-                  },
-                ),
-                Text("Feminino"),
-              ],
-            ),
-          ],
+    _controllerCheckM(bool value) async {
+      _blocPatient.add(ControlCheckMalePressedEvent(value: value));
+      // _blocPatient.close();
+    }
+
+    _controllerCheckF(bool value) async {
+      _blocPatient.add(ControlCheckFemalePressedEvent(value: value));
+      // _blocPatient.close();
+    }
+
+    _controllChangedInputAge(String value) async {
+      _blocPatient
+          .add(ControllAgeChangedEvent(value: value, focusNode: focusNode));
+    }
+
+    return BlocListener<PatientBloc, PatientState>(
+      listener: (context, state) {
+        if (state is UpdateCheckControllMaleState) {
+          setState(() {
+            checkM = state.checkM;
+            checkF = state.checkF;
+            widget.sexController.text = state.sex;
+          });
+        }
+        if (state is UpdateCheckControllFemaleState) {
+          setState(() {
+            checkM = state.checkM;
+            checkF = state.checkF;
+            widget.sexController.text = state.sex;
+          });
+        }
+        if (state is ValueIsNumberState) {
+          setState(() {
+            age = state.age;
+          });
+        }
+        if (state is ValueIsNotNumberState) {
+          print("estado certo");
+          setState(() {
+            FocusScope.of(context).requestFocus(new FocusNode());
+            widget.ageController.text = state.value;
+          });
+        }
+        // if (state is UpdateValueFieldAgeState) {
+        //   setState(() {
+        //     widget.ageController.text = state.value;
+        //   });
+        // }
+      },
+      child: Container(
+        height: MediaQuery.of(context).size.height * 0.55,
+        child: Padding(
+          padding: const EdgeInsets.only(left: 50.0, right: 50),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              TextFormField(
+                decoration: InputDecoration(labelText: "Nome do Paciente"),
+                controller: widget.nameController,
+              ),
+              TextFormField(
+                decoration: InputDecoration(labelText: "Idade do Paciente"),
+                controller: widget.ageController,
+                // focusNode: focusNode,
+                onChanged: (value) {
+                  print("valor ai $value");
+                  _controllChangedInputAge(value);
+                  // try {
+                  //   if (value.isNotEmpty) {
+                  //     age = int.parse(value);
+                  //   }
+                  //   focusNode.addListener(() {
+                  //     if (!focusNode.hasFocus) {
+                  //       widget.ageController.text = "$age";
+                  //     }
+                  //   });
+                  // } catch (_) {
+                  //   setState(() {
+                  //     widget.ageController.text = "";
+                  //   });
+                  // }
+                },
+              ),
+              Row(
+                children: [
+                  Checkbox(
+                    value: checkM,
+                    onChanged: (value) {
+                      _controllerCheckM(value);
+                    },
+                  ),
+                  Text("Masculino"),
+                  Checkbox(
+                    value: checkF,
+                    onChanged: (value) {
+                      _controllerCheckF(value);
+                    },
+                  ),
+                  Text("Feminino"),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
