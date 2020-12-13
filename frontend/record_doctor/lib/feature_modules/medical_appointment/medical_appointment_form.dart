@@ -179,7 +179,7 @@ class _MedicalAppointmentFormState extends State<MedicalAppointmentForm> {
                             labelText: labels.labelFieldSymptom,
                             labelTextSubField: labels.buttonAddMoreSymptom,
                             valueSize: MediaQuery.of(context).size.width * 0.75,
-                            nameDiseaseController: widget.nameDiseaseController,
+                            nameSymptomController: widget.nameDiseaseController,
                           ),
                         ),
                         for (var item in widget.fieldsInfoSymptom)

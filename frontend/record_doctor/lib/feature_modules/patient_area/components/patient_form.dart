@@ -39,12 +39,10 @@ class _PatientFormState extends State<PatientForm> {
   Widget build(BuildContext context) {
     _controllerCheckM(bool value) async {
       _blocPatient.add(ControlCheckMalePressedEvent(value: value));
-      // _blocPatient.close();
     }
 
     _controllerCheckF(bool value) async {
       _blocPatient.add(ControlCheckFemalePressedEvent(value: value));
-      // _blocPatient.close();
     }
 
     _controllChangedInputAge(String value) async {
@@ -74,17 +72,11 @@ class _PatientFormState extends State<PatientForm> {
           });
         }
         if (state is ValueIsNotNumberState) {
-          print("estado certo");
           setState(() {
             FocusScope.of(context).requestFocus(new FocusNode());
             widget.ageController.text = state.value;
           });
         }
-        // if (state is UpdateValueFieldAgeState) {
-        //   setState(() {
-        //     widget.ageController.text = state.value;
-        //   });
-        // }
       },
       child: Container(
         height: MediaQuery.of(context).size.height * 0.55,
@@ -103,7 +95,6 @@ class _PatientFormState extends State<PatientForm> {
                 controller: widget.ageController,
                 // focusNode: focusNode,
                 onChanged: (value) {
-                  print("valor ai $value");
                   _controllChangedInputAge(value);
                   // try {
                   //   if (value.isNotEmpty) {

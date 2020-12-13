@@ -5,13 +5,13 @@ class FieldsCommun extends StatelessWidget {
   final String labelTextSubField;
   final Function function;
   double valueSize;
-  final TextEditingController nameDiseaseController;
+  final TextEditingController nameSymptomController;
   FieldsCommun(
       {this.labelText,
       this.labelTextSubField,
       this.function,
       this.valueSize,
-      this.nameDiseaseController});
+      this.nameSymptomController});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,7 @@ class FieldsCommun extends StatelessWidget {
         Container(
           width: MediaQuery.of(context).size.width - valueSize,
           child: TextFormField(
-            controller: nameDiseaseController,
+            controller: nameSymptomController,
             decoration: InputDecoration(labelText: labelText),
           ),
         ),

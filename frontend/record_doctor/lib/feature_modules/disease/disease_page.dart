@@ -22,6 +22,7 @@ class _DiseasePageState extends State<DiseasePage> {
   List<Medicines> idsMedications = [];
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final nameDiseaseController = TextEditingController();
+  final nameSymptomFirstController = TextEditingController();
   var _blocDisease;
   @override
   void initState() {
@@ -30,6 +31,8 @@ class _DiseasePageState extends State<DiseasePage> {
   }
 
   _createNewDisease() {
+    print("sintomas ${namesSymptoms.toString()}");
+    namesSymptoms.add(nameSymptomFirstController.text);
     for (var item in fieldsInfoSymptom) {
       namesSymptoms.add(item.controller.text);
     }
@@ -126,6 +129,7 @@ class _DiseasePageState extends State<DiseasePage> {
                   fieldsInfoMedication: fieldsInfoMedication,
                   medicationsForDisease: medicationsForDisease,
                   nameDiseaseController: nameDiseaseController,
+                  nameSymptomFirst: nameSymptomFirstController,
                   idsMedications: idsMedications,
                 ),
               ),

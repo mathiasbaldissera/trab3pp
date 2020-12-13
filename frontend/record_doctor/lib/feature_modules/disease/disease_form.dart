@@ -13,13 +13,15 @@ class DiseaseForm extends StatefulWidget {
   final List<TextFormField> fieldsInfoMedication;
   final List<Medicine> medicationsForDisease;
   final TextEditingController nameDiseaseController;
+  final TextEditingController nameSymptomFirst;
   final List<Medicines> idsMedications;
   const DiseaseForm(
       {this.fieldsInfoSymptom,
       this.fieldsInfoMedication,
       this.medicationsForDisease,
       this.nameDiseaseController,
-      this.idsMedications});
+      this.idsMedications,
+      this.nameSymptomFirst});
   @override
   _DiseaseFormState createState() => _DiseaseFormState();
 }
@@ -48,11 +50,6 @@ class _DiseaseFormState extends State<DiseaseForm> {
       });
     }
   }
-
-  // _addMoreMedicationForDisease() {
-  //   _blocDisease.add(AddFieldInfoDiseaseEvent(
-  //       helperTextField: labels.labelMoreFieldsMedicationForDisease));
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -83,6 +80,7 @@ class _DiseaseFormState extends State<DiseaseForm> {
                     function: _addMoreInfoDisease,
                     labelText: labels.labelFieldSymptom,
                     labelTextSubField: labels.buttonAddMoreSymptom,
+                    nameSymptomController: widget.nameSymptomFirst,
                   ),
                   for (var item in widget.fieldsInfoSymptom) item,
                   Padding(
@@ -160,17 +158,28 @@ class _DiseaseFormState extends State<DiseaseForm> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Container(
-                                      width: 100,
+                                      width: 200,
                                       child: Row(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
                                         children: [
                                           Icon(Icons.dangerous),
-                                          Text(item.name),
+                                          Padding(
+                                            padding:
+                                                const EdgeInsets.only(left: 20),
+                                            child: Text(item.name),
+                                          ),
                                         ],
                                       ),
                                     ),
                                     GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          _medicationsSelected.remove(item);
+                                        });
+                                      },
                                       child: Column(
                                         children: [
                                           Icon(
