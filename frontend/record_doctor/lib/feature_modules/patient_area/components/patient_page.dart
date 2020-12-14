@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:record_doctor/communs/bottom_navigation_commun.dart';
 import 'package:record_doctor/communs/colorPrimary.dart';
+import 'package:record_doctor/constants/constant_routes.dart';
 import 'package:record_doctor/constants/constant_strings.dart' as labels;
 import 'package:record_doctor/feature_modules/patient_area/patient/patient_bloc.dart';
 import 'package:record_doctor/feature_modules/patient_area/patient/patient_event.dart';
@@ -46,6 +47,19 @@ class _PatientPageState extends State<PatientPage> {
       Navigator.pop(context);
     }
 
+    Future _showSnackBar() async {
+      return _scaffoldKey.currentState.showSnackBar(
+        SnackBar(
+          backgroundColor: PrimaryColor().getColor(),
+          content: Row(
+            children: <Widget>[
+              Text("O paciente foi cadastrado com sucesso!"),
+            ],
+          ),
+        ),
+      );
+    }
+
     return BlocBuilder<PatientBloc, PatientState>(
       builder: (context, state) {
         if (state is LoadingActionCreatePatientState) {
@@ -60,16 +74,10 @@ class _PatientPageState extends State<PatientPage> {
           );
         }
         if (state is CreatePatientSucessState) {
-          _scaffoldKey.currentState.showSnackBar(
-            SnackBar(
-              backgroundColor: PrimaryColor().getColor(),
-              content: Row(
-                children: <Widget>[
-                  Text("O paciente foi cadastrado com sucesso!"),
-                ],
-              ),
-            ),
-          );
+          _showSnackBar();
+          Future.delayed(const Duration(milliseconds: 10000), () {
+            Navigator.pushNamed(context, HomeRouteNavigator);
+          });
         }
         if (state is FailedCreatePatientState) {
           _scaffoldKey.currentState.showSnackBar(

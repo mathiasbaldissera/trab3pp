@@ -8,6 +8,7 @@ import 'package:record_doctor/feature_modules/medical_appointment/bloc/medical_a
 import 'package:record_doctor/models/medicine.dart';
 import 'package:record_doctor/models/patient.dart';
 import 'package:record_doctor/models/possible_disease.dart';
+import 'package:record_doctor/models/sex.dart';
 
 class MedicalAppointmentForm extends StatefulWidget {
   final List<Patient> listPatient;
@@ -39,6 +40,7 @@ class _MedicalAppointmentFormState extends State<MedicalAppointmentForm> {
   }
 
   _gerateDiagnosisMedicalAppointment() {
+    symptoms.clear();
     symptoms.add(widget.nameDiseaseController.text);
     if (widget.fieldsInfoSymptom != null) {
       for (var item in widget.fieldsInfoSymptom) {
@@ -164,7 +166,9 @@ class _MedicalAppointmentFormState extends State<MedicalAppointmentForm> {
                                       Text("Sexo do paciente: "),
                                       Text(_selectedPatient == null
                                           ? ""
-                                          : "${_selectedPatient.sex}"),
+                                          : (_selectedPatient.sex == Sex.MALE
+                                              ? "Masculino"
+                                              : "Feminino")),
                                     ],
                                   ),
                                 ),
@@ -259,15 +263,36 @@ class _MedicalAppointmentFormState extends State<MedicalAppointmentForm> {
                                   },
                                 );
                               }).toList(),
-                              // CheckboxListTile(
-                              //   activeColor: Colors.black,
-                              //   title: const Text('Covid-19'),
-                              //   subtitle: const Text('baralho'),
-                              //   value: false,
-                              //   onChanged: (bool value) {
-                              //     setState(() {});
-                              //   },
-                              // ),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Color(0xFF007376),
+                              border: Border.all(width: 1.0),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(5.0)),
+                            ),
+                            child: ListTile(
+                              onTap: () {
+                                setState(() {
+                                  widget.fieldsInfoSymptom.clear();
+                                });
+                              },
+                              title: Text(
+                                "Limpe os campos para gerar novo diagnóstico.",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              subtitle: Text(
+                                "Apenas clique nesta opção e os campos de sintomas serão limpados.",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              leading: Icon(
+                                Icons.sync_sharp,
+                                color: Colors.white,
+                              ),
                             ),
                           ),
                         ),

@@ -48,6 +48,21 @@ class _MedicationPageState extends State<MedicationPage> {
             fields.add(state.field);
           });
         }
+        if (state is LoadingProcessCreateMedicationState) {
+          _scaffoldKey.currentState.showSnackBar(
+            SnackBar(
+              content: Row(
+                children: <Widget>[
+                  CircularProgressIndicator(),
+                  SizedBox(
+                    width: 30,
+                  ),
+                  Text("O remédio está sendo cadastrado..."),
+                ],
+              ),
+            ),
+          );
+        }
         if (state is CreatedSucessMedicationState) {
           _scaffoldKey.currentState.showSnackBar(
             SnackBar(
