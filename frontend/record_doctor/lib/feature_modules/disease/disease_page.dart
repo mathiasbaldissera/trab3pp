@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:record_doctor/communs/bottom_navigation_commun.dart';
+import 'package:record_doctor/communs/colorPrimary.dart';
 import 'package:record_doctor/constants/constant_strings.dart';
 import 'package:record_doctor/feature_modules/disease/bloc/disease_bloc.dart';
 import 'package:record_doctor/feature_modules/disease/bloc/disease_event.dart';
@@ -79,6 +80,7 @@ class _DiseasePageState extends State<DiseasePage> {
         if (state is ProcessCreateFailedDiseaseState) {
           _scaffoldKey.currentState.showSnackBar(
             SnackBar(
+              backgroundColor: Color(0xFFBB0000),
               content: Row(
                 children: <Widget>[
                   Text("Não foi possível salvar seus dados. Tente novamente!!"),
@@ -90,6 +92,7 @@ class _DiseasePageState extends State<DiseasePage> {
         if (state is ProcessCreateSucessDiseaseState) {
           _scaffoldKey.currentState.showSnackBar(
             SnackBar(
+              backgroundColor: PrimaryColor().getColor(),
               content: Row(
                 children: <Widget>[
                   Text("Seus dados foram cadastrados com sucesso!!"),

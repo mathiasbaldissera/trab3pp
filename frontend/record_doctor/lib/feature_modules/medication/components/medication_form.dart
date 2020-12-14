@@ -91,6 +91,36 @@ class _MedicationFormState extends State<MedicationForm> {
                     ],
                   ),
                   for (var item in widget.fieldsMedications) item,
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        top: 60.0, bottom: 30.0, right: 300),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Color(0xFF007376),
+                        border: Border.all(width: 1.0),
+                        borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                      ),
+                      child: ListTile(
+                        onTap: () {
+                          setState(() {
+                            widget.fieldsMedications.clear();
+                          });
+                        },
+                        title: Text(
+                          "Limpar campos de funções adicionais do remédio.",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        subtitle: Text(
+                          "Apenas clique nesta opção e os campos de funções adicionais serão removidos.",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        leading: Icon(
+                          Icons.sync_sharp,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),

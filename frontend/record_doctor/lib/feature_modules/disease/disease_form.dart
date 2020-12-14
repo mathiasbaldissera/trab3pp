@@ -84,6 +84,36 @@ class _DiseaseFormState extends State<DiseaseForm> {
                   ),
                   for (var item in widget.fieldsInfoSymptom) item,
                   Padding(
+                    padding: const EdgeInsets.only(
+                        top: 60.0, bottom: 30.0, right: 300),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Color(0xFF007376),
+                        border: Border.all(width: 1.0),
+                        borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                      ),
+                      child: ListTile(
+                        onTap: () {
+                          setState(() {
+                            widget.fieldsInfoSymptom.clear();
+                          });
+                        },
+                        title: Text(
+                          "Limpar campos de sintomas adicionais.",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        subtitle: Text(
+                          "Apenas clique nesta opção e os campos de sintomas serão limpados.",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        leading: Icon(
+                          Icons.sync_sharp,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Padding(
                     padding: const EdgeInsets.only(top: 20),
                     child: Column(
                       children: [

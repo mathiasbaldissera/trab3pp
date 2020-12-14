@@ -75,9 +75,6 @@ class _PatientPageState extends State<PatientPage> {
         }
         if (state is CreatePatientSucessState) {
           _showSnackBar();
-          Future.delayed(const Duration(milliseconds: 10000), () {
-            Navigator.pushNamed(context, HomeRouteNavigator);
-          });
         }
         if (state is FailedCreatePatientState) {
           _scaffoldKey.currentState.showSnackBar(
